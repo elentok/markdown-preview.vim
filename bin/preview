@@ -1,0 +1,17 @@
+#!/bin/bash
+
+root=`dirname ${BASH_SOURCE[0]-$0}`
+root=`cd $root/.. && pwd`
+assets="$root/assets"
+
+output=/tmp/markdown-preview.html
+
+render() {
+  cat $assets/header.html | sed "s#{{ASSETS}}#${assets}#g"
+  marked --gfm -i "$*"
+  cat $assets/footer.html
+}
+
+render "$*" > $output
+qlmanage -p $output
+
